@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="kr.cleancode.dashboard.manager.check.service.CheckSqlVo" alias="CheckSqlVo" />
+		
+		<typeAlias type="kr.cleancode.dashboard.manager.xr00.service.Xr000000Vo" alias="Xr000000Vo" />
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="sql/check/CheckSql.xml" />
+		<mapper resource="sql/check/TableMakeSql.xml" />
+		
+		<mapper resource="sql/xr00/Xr000000Sql.xml" />
+	</mappers>
+</configuration>

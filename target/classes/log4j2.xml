@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <!-- <PatternLayout pattern="%d %5p [%c] %m (%F:%L)%n" /> -->
+            <PatternLayout pattern="%d %5p %m (%F:%L)%n" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="java.sql" level="trace" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+        <!-- log SQL with timing information, post execution -->
+	    <Logger name="jdbc.sqltiming" level="trace" additivity="false">
+	        <AppenderRef ref="console" />
+	    </Logger>
+	    <Logger name="org.springframework" level="error" additivity="false">
+	        <AppenderRef ref="console" />
+	    </Logger>
+	    <Logger name="net.sf.jasperreports" level="error" additivity="false">
+	        <AppenderRef ref="console" />
+	    </Logger>
+        <Root level="trace">
+            <AppenderRef ref="console" />
+        </Root>
+    </Loggers>
+</Configuration>

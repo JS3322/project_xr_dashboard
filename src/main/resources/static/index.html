@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta property="og:title" content="Clean Code - Code Distribution System" />
+		<meta property="og:url" content="https://cleancode.kr" />
+		<meta property="og:image" content="https://cleancode.kr/images/xr_Logo.png" />
+		<meta property="og:description" content="clean Code - Code Distribution System" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Clean Code - XR Manager</title>
+		<style type="text/css">
+			html, body, iframe {
+				margin: 0;
+				padding: 0;
+				border: 0;
+				font: inherit;
+				vertical-align: baseline
+			}
+			
+			#demo-iframe-wrapper {
+				position: fixed;
+				background: #dee0e3;
+				left: 0;
+				width: 100%;
+				height: calc(100%);
+				opacity: 1.0;
+				-moz-transition: all 0.5s ease-in-out;
+				-webkit-transition: all 0.5s ease-in-out;
+				-ms-transition: all 0.5s ease-in-out;
+				transition: all 0.5s ease-in-out
+			}
+			
+			body.overlap #demo-iframe-wrapper {
+				top: 0;
+				height: 100%
+			}
+			
+			#iframe-wrapper iframe {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				-moz-transition: all 0.5s ease-in-out;
+				-webkit-transition: all 0.5s ease-in-out;
+				-ms-transition: all 0.5s ease-in-out;
+				transition: all 0.5s ease-in-out;
+				overflow-x: hidden
+			}
+		</style>
+	</head>
+	<body>
+		<div id="iframe-wrapper">
+			<iframe width="100%" id="demo-iframe-wrapper" src="/xr000000s00controller.do"></iframe>
+		</div>
+	</body>
+</html>

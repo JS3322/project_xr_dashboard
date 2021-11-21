@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.cleancode.dashboard.manager.xr00.service.impl.Xr000000Dao">
+	
+	<select id="lT_BS_USR_LANG_INFO" resultType="Xr000000Vo">
+		SELECT
+			PK_LANG_SER
+			, LANGUAGE_NM
+		FROM
+			T_BS_USR_LANG_INFO
+		WHERE
+			1 = 1
+		ORDER BY
+			PK_LANG_SER
+	</select>
+	
+	<select id="sUsrIdExists" parameterType="Xr000000Vo" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			T_MNG_USR_INFO
+		WHERE
+			1 = 1
+			AND DEL_YN = 'N'
+			AND USR_ID = #{USR_ID}
+	</select>
+	
+	<select id="sUsrInfo" parameterType="Xr000000Vo" resultType="Xr000000Vo">
+		SELECT 
+			A.USR_ID
+			, B.PK_USR_DTL_SER
+			, B.PK_USR_DTL_HIS_SER
+			, B.PK_USR_LEVEL_SER
+			, C.LEVEL_NM
+			, B.PK_LANG_SER
+			, D.LANGUAGE_NM
+			, B.FST_NM
+			, B.LST_NM
+			, B.EMAIL
+			, B.TEL
+			, B.NOTE
+		FROM 
+			T_MNG_USR_INFO A
+			LEFT OUTER JOIN (
+				SELECT
+					A.PK_USR_DTL_HIS_SER
+					, A.USR_ID 
+					<![CDATA[, (SELECT COUNT(*) from T_MNG_USR_DTL_HIS_INFO B WHERE 1 = 1 AND A.PK_USR_DTL_HIS_SER <= B.PK_USR_DTL_HIS_SER AND A.USR_ID = B.USR_ID) AS ROWNUM]]>
+				FROM 
+					T_MNG_USR_DTL_HIS_INFO A 
+				WHERE
+					1 = 1
+					AND ROWNUM = 1
+			) GROUP_A ON A.USR_ID = GROUP_A.USR_ID
+			LEFT OUTER JOIN (
+				SELECT
+					A.USR_ID
+					, A.PASSWORD 
+					<![CDATA[, (SELECT COUNT(*) from T_MNG_USR_PW_INFO B WHERE 1 = 1 AND A.PK_USR_PW_SER <= B.PK_USR_PW_SER AND A.USR_ID = B.USR_ID) AS ROWNUM]]>
+				FROM 
+					T_MNG_USR_PW_INFO A 
+				WHERE
+					1 = 1
+					AND ROWNUM = 1
+			) GROUP_B ON A.USR_ID = GROUP_B.USR_ID
+			, T_MNG_USR_DTL_INFO B
+			, T_BS_USR_LEVEL_INFO C
+			, T_BS_USR_LANG_INFO D
+		WHERE
+			1 = 1
+			AND A.DEL_YN = 'N'
+			AND A.USR_ID = #{USR_ID}
+			AND GROUP_B.PASSWORD = #{PASSWORD}
+			AND B.PK_USR_LEVEL_SER = C.PK_USR_LEVEL_SER
+			AND B.PK_LANG_SER = D.PK_LANG_SER
+	</select>
+	
+</mapper>
