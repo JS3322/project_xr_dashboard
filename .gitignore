@@ -27,3 +27,8 @@ hs_err_pid*
 
 # Calculator Logic
 /lib
+
+# Private File
+README_private.md
+.DS_STORE
+.idea
