@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.cleancode.dashboard.manager.module.background.service.impl.BackgroundSqlDao">
+
+	<insert id="iTMngBackgroundInfo" parameterType="BackgroundSqlVo">
+		INSERT INTO T_MNG_BACKGROUND_INFO (
+			PK_BACKGROUND_SER
+			, BACKGROUND_FILE_NM
+			, BACKGROUND_FILE_PATH
+			, DEL_YN
+			, REG_DT
+			, MOD_DT
+		) VALUES (
+			(SELECT 'PBS' || SUBSTR('00000000000000000' || CAST(COUNT(PK_BACKGROUND_SER) + 1 AS TEXT), -17, 17) AS PK_BACKGROUND_SER FROM T_MNG_BACKGROUND_INFO)
+			, #{BACKGROUND_FILE_NM}
+			, #{BACKGROUND_FILE_PATH}
+			, 'N'
+			, (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, NULL
+		)
+		<selectKey keyProperty="PK_BACKGROUND_SER" resultType="java.lang.String" order="AFTER">
+			SELECT 'PBS' || SUBSTR('00000000000000000' || CAST(COUNT(PK_BACKGROUND_SER) AS TEXT), -17, 17) AS PK_BACKGROUND_SER FROM T_MNG_BACKGROUND_INFO
+		</selectKey>
+	</insert>
+	
+	<select id="sTMngBackgroundInfo" resultType="BackgroundSqlVo">
+		SELECT
+			PK_BACKGROUND_SER
+			, BACKGROUND_FILE_NM
+			, BACKGROUND_FILE_PATH
+			, DEL_YN
+			, REG_DT
+			, MOD_DT
+		FROM
+			T_MNG_BACKGROUND_INFO
+		WHERE
+			1 = 1
+			AND DEL_YN = 'N'
+			AND MOD_DT IS NULL
+	</select>
+	
+	<update id="dTMngBackgroundInfo" parameterType="string">
+		UPDATE T_MNG_BACKGROUND_INFO SET
+			DEL_YN = 'Y'
+			, MOD_DT = (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+		WHERE
+			1 = 1
+			AND PK_BACKGROUND_SER = #{PK_BACKGROUND_SER}
+	</update>
+	
+</mapper>

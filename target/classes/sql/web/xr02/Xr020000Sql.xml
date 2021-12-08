@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.cleancode.dashboard.manager.web.xr02.service.impl.Xr020000Dao">
+	
+	<select id="select"  parameterType="Xr020000Vo" resultType="Xr020000Vo">
+		SELECT 
+			A.PK_CONTENTS_SER
+			, B.FILE_PATH
+			, B.PLY_DURATION
+			, B.SRC_FILE_NM
+			, B.PLY_DURATION
+			, C.EXPIRE_DT
+			, C.SRC_FILE_NM AS DRM_SRC_FILE_NM
+			, D.CONTENTS_NM
+			, A.REG_DT
+			, A.MOD_DT
+			, E.SRC_FILE_NM AS PST_SRC_FILE_NM
+		FROM 
+			T_CONTENTS_INFO A
+			, T_CONTENTS_FILE_INFO B
+			, T_CONTENTS_DRM_INFO C
+			, T_CONTENTS_NM_INFO D
+			, T_CONTENTS_PST_INFO E
+		WHERE 	
+			1 = 1
+			AND A.DEL_YN = 'N'
+			AND B.DEL_YN = 'N'
+			AND A.PK_CONTENTS_SER = B.PK_CONTENTS_SER
+			AND C.DEL_YN = 'N'
+			AND A.PK_CONTENTS_SER = C.PK_CONTENTS_SER
+			AND D.DEL_YN = 'N'
+			AND A.PK_CONTENTS_SER = D.PK_CONTENTS_SER
+			AND E.DEL_YN = 'N'
+			AND A.PK_CONTENTS_SER = E.PK_CONTENTS_SER
+			<if test="PK_CONTENTS_SER != null">
+				<bind name="pattern1" value="'%' + PK_CONTENTS_SER" />
+			AND A.PK_CONTENTS_SER LIKE #{pattern1} COLLATE NOCASE
+			</if>
+			<if test="CONTENTS_NM != null">
+				<bind name="pattern2" value="CONTENTS_NM + '%'" />
+			AND D.CONTENTS_NM LIKE #{pattern2} COLLATE NOCASE
+			</if>
+			<if test="DT_ST != null">
+			<![CDATA[ AND A.REG_DT >= STRFTIME('%Y-%m-%d %H:%M:%S', #{DT_ST}) ]]>
+			</if>
+			<if test="DT_LST != null">
+			<![CDATA[ AND A.REG_DT <= STRFTIME('%Y-%m-%d %H:%M:%S', #{DT_LST}) ]]>
+			</if> 
+	</select>
+	
+	<select id="sT_CONTENTS_FILE_INFO" parameterType="java.lang.String" resultType="Xr020000Vo">
+		SELECT
+			PK_CONTENTS_FILE_SER
+			, PK_CONTENTS_SER
+			, SRC_FILE_NM AS CTS_SRC_FILE_NM
+			, FILE_PATH AS CTS_FILE_PATH
+			, PLY_DURATION 
+			, DEL_YN
+			, REG_DT
+			, REG_ID
+		FROM
+			T_CONTENTS_FILE_INFO
+		WHERE
+			1 = 1
+			AND DEL_YN = 'N'
+			AND PK_CONTENTS_SER = #{PK_CONTENTS_SER}
+	</select>
+	
+	<select id="sT_CONTENTS_PST_INFO" parameterType="java.lang.String" resultType="Xr020000Vo">
+		SELECT
+			PK_CONTENTS_PST_SER
+			, PK_CONTENTS_SER 
+			, SRC_FILE_NM AS PST_SRC_FILE_NM
+			, FILE_PATH AS PST_FILE_PATH
+			, DEL_YN
+			, REG_DT
+			, REG_ID
+		FROM
+			T_CONTENTS_PST_INFO
+		WHERE
+			1 = 1
+			AND DEL_YN = 'N'
+			AND PK_CONTENTS_SER = #{PK_CONTENTS_SER}
+	</select>
+	
+	<select id="sT_CONTENTS_DRM_INFO" parameterType="java.lang.String" resultType="Xr020000Vo">
+		SELECT
+			PK_CONTENTS_DRM_SER
+			, PK_CONTENTS_SER
+			, SRC_FILE_NM AS DRM_SRC_FILE_NM
+			, FILE_PATH AS DRM_FILE_PATH
+			, EXPIRE_DT
+			, DEL_YN
+			, REG_DT
+			, REG_ID
+		FROM
+			T_CONTENTS_DRM_INFO
+		WHERE
+			1 = 1
+			AND DEL_YN = 'N'
+			AND PK_CONTENTS_SER = #{PK_CONTENTS_SER}
+	</select>
+	
+	<select id="sT_CONTENTS_NM_INFO" parameterType="java.lang.String" resultType="Xr020000Vo">
+		SELECT
+			PK_CONTENTS_NM_SER
+			, PK_CONTENTS_SER
+			, CONTENTS_NM
+			, DEL_YN
+			, REG_DT
+			, REG_ID
+		FROM
+			T_CONTENTS_NM_INFO
+		WHERE
+			1 = 1
+			AND DEL_YN = 'N'
+			AND PK_CONTENTS_SER = #{PK_CONTENTS_SER}
+	</select>
+	
+	<insert id="iT_CONTENTS_INFO" parameterType="Xr020000Vo">
+		INSERT INTO T_CONTENTS_INFO (
+			PK_CONTENTS_SER
+			, DEL_YN
+			, REG_DT
+			, REG_ID
+			, MOD_DT
+			, MOD_ID
+		) VALUES (
+			(SELECT 'PCS' || SUBSTR('0000000000000000000000000000' || CAST(COUNT(PK_CONTENTS_SER) + 1 AS TEXT), -29, 29) AS PK_CONTENTS_SER FROM T_CONTENTS_INFO)
+			, 'N'
+			, (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, #{REG_ID}
+			, NULL
+			, NULL
+		)
+		<selectKey keyProperty="PK_CONTENTS_SER" resultType="java.lang.String" order="AFTER">
+			SELECT 'PCS' || SUBSTR('0000000000000000000000000000' || CAST(COUNT(PK_CONTENTS_SER) AS TEXT), -29, 29) AS PK_CONTENTS_SER FROM T_CONTENTS_INFO
+		</selectKey>
+	</insert>
+	
+	<insert id="iT_CONTENTS_FILE_INFO" parameterType="Xr020000Vo">
+		INSERT INTO T_CONTENTS_FILE_INFO (
+			PK_CONTENTS_FILE_SER
+			, PK_CONTENTS_SER
+			, SRC_FILE_NM
+			, FILE_PATH
+			, PLY_DURATION
+			, DEL_YN
+			, REG_DT
+			, REG_ID
+		) VALUES (
+			(SELECT 'PCFS' || SUBSTR('000000000000000000000000000' || CAST(COUNT(PK_CONTENTS_FILE_SER) + 1 AS TEXT), -28, 28) AS PK_CONTENTS_FILE_SER FROM T_CONTENTS_FILE_INFO)
+			, #{PK_CONTENTS_SER}
+			, #{CTS_SRC_FILE_NM}
+			, #{CTS_FILE_PATH}
+			, #{PLY_DURATION}
+			, 'N'
+			, (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, #{REG_ID}
+		)
+		<selectKey keyProperty="PK_CONTENTS_FILE_SER" resultType="java.lang.String" order="AFTER">
+			SELECT 'PCFS' || SUBSTR('000000000000000000000000000' || CAST(COUNT(PK_CONTENTS_FILE_SER) AS TEXT), -28, 28) AS PK_CONTENTS_FILE_SER FROM T_CONTENTS_FILE_INFO
+		</selectKey>
+	</insert>
+	
+	<insert id="iT_CONTENTS_PST_INFO" parameterType="Xr020000Vo">
+		INSERT INTO T_CONTENTS_PST_INFO (
+			PK_CONTENTS_PST_SER
+			, PK_CONTENTS_SER
+			, SRC_FILE_NM
+			, FILE_PATH
+			, DEL_YN
+			, REG_DT
+			, REG_ID
+		) VALUES (
+			(SELECT 'PCPS' || SUBSTR('000000000000000000000000000' || CAST(COUNT(PK_CONTENTS_PST_SER) + 1 AS TEXT), -28, 28) AS PK_CONTENTS_PST_SER FROM T_CONTENTS_PST_INFO)
+			, #{PK_CONTENTS_SER}
+			, #{PST_SRC_FILE_NM}
+			, #{PST_FILE_PATH}
+			, 'N'
+			, (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, #{REG_ID}
+		)
+		<selectKey keyProperty="PK_CONTENTS_PST_SER" resultType="java.lang.String" order="AFTER">
+			SELECT 'PCPS' || SUBSTR('000000000000000000000000000' || CAST(COUNT(PK_CONTENTS_PST_SER) AS TEXT), -28, 28) AS PK_CONTENTS_PST_SER FROM T_CONTENTS_PST_INFO
+		</selectKey>
+	</insert>
+	
+	<insert id="iT_CONTENTS_DRM_INFO" parameterType="Xr020000Vo">
+		INSERT INTO T_CONTENTS_DRM_INFO (
+			PK_CONTENTS_DRM_SER
+			, PK_CONTENTS_SER
+			, SRC_FILE_NM
+			, FILE_PATH
+			, EXPIRE_DT
+			, DEL_YN
+			, REG_DT
+			, REG_ID
+		) VALUES (
+			(SELECT 'PCDS' || SUBSTR('000000000000000000000000000' || CAST(COUNT(PK_CONTENTS_DRM_SER) + 1 AS TEXT), -28, 28) AS PK_CONTENTS_DRM_SER FROM T_CONTENTS_DRM_INFO)
+			, #{PK_CONTENTS_SER}
+			, #{DRM_SRC_FILE_NM}
+			, #{DRM_FILE_PATH}
+			, #{EXPIRE_DT}
+			, 'N'
+			, (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, #{REG_ID}
+		)
+		<selectKey keyProperty="PK_CONTENTS_DRM_SER" resultType="java.lang.String" order="AFTER">
+			SELECT 'PCDS' || SUBSTR('000000000000000000000000000' || CAST(COUNT(PK_CONTENTS_DRM_SER) AS TEXT), -28, 28) AS PK_CONTENTS_DRM_SER FROM T_CONTENTS_DRM_INFO
+		</selectKey>
+	</insert>
+	
+	<insert id="iT_CONTENTS_NM_INFO" parameterType="Xr020000Vo">
+		INSERT INTO T_CONTENTS_NM_INFO (
+			PK_CONTENTS_NM_SER
+			, PK_CONTENTS_SER
+			, CONTENTS_NM
+			, DEL_YN
+			, REG_DT
+			, REG_ID
+		) VALUES (
+			(SELECT 'PCNS' || SUBSTR('000000000000000000000000000' || CAST(COUNT(PK_CONTENTS_NM_SER) + 1 AS TEXT), -28, 28) AS PK_CONTENTS_NM_SER FROM T_CONTENTS_NM_INFO)
+			, #{PK_CONTENTS_SER}
+			, #{CONTENTS_NM}
+			, 'N'
+			, (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, #{REG_ID}
+		)
+		<selectKey keyProperty="PK_CONTENTS_NM_SER" resultType="java.lang.String" order="AFTER">
+			SELECT 'PCNS' || SUBSTR('000000000000000000000000000' || CAST(COUNT(PK_CONTENTS_NM_SER) AS TEXT), -28, 28) AS PK_CONTENTS_NM_SER FROM T_CONTENTS_NM_INFO
+		</selectKey>
+	</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+	<update id="uT_CONTENTS_INFO" parameterType="Xr020000Vo">
+		UPDATE T_CONTENTS_INFO SET
+			  MOD_DT = (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, MOD_ID = #{MOD_ID}
+		WHERE
+			1 = 1
+			AND PK_CONTENTS_SER = #{PK_CONTENTS_SER}
+	</update>
+	
+	<update id="uT_CONTENTS_FILE_INFO" parameterType="Xr020000Vo">
+		UPDATE T_CONTENTS_FILE_INFO SET
+			SRC_FILE_NM = #{CTS_SRC_FILE_NM}
+			, FILE_PATH = #{CTS_FILE_PATH}
+			, PLY_DURATION = #{PLY_DURATION}
+		WHERE
+			1 = 1
+			AND PK_CONTENTS_SER = #{PK_CONTENTS_SER}
+	</update>
+	
+	<update id="uT_CONTENTS_PST_INFO" parameterType="Xr020000Vo">
+		UPDATE T_CONTENTS_PST_INFO SET
+			SRC_FILE_NM = #{PST_SRC_FILE_NM}
+			, FILE_PATH = #{PST_FILE_PATH}
+		WHERE
+			1 = 1
+			AND PK_CONTENTS_SER = #{PK_CONTENTS_SER}
+	</update>
+	
+	<update id="uT_CONTENTS_DRM_INFO" parameterType="Xr020000Vo">
+		UPDATE T_CONTENTS_DRM_INFO SET
+			SRC_FILE_NM = #{DRM_SRC_FILE_NM}
+			, FILE_PATH = #{DRM_FILE_PATH}
+		WHERE
+			1 = 1
+			AND PK_CONTENTS_SER = #{PK_CONTENTS_SER}
+	</update>
+	
+	<update id="uT_CONTENTS_NM_INFO" parameterType="Xr020000Vo">
+		UPDATE T_CONTENTS_NM_INFO SET
+			 CONTENTS_NM = #{CONTENTS_NM}
+		WHERE
+			1 = 1
+			AND PK_CONTENTS_SER = #{PK_CONTENTS_SER}
+	</update>
+	
+	
+	
+	
+	
+	<update id="dT_CONTENTS_INFO" parameterType="Xr020000Vo">
+		UPDATE T_CONTENTS_INFO SET
+			DEL_YN = 'Y'
+			, MOD_DT = (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, MOD_ID = #{MOD_ID}
+		WHERE
+			1 = 1
+			AND PK_CONTENTS_SER = #{PK_CONTENTS_SER}
+	</update>
+	
+	<update id="dT_CONTENTS_FILE_INFO" parameterType="Xr020000Vo">
+		UPDATE T_CONTENTS_FILE_INFO SET
+			DEL_YN = 'Y'
+			, MOD_DT = (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, MOD_ID = #{MOD_ID}
+		WHERE
+			1 = 1
+			AND PK_CONTENTS_SER = #{PK_CONTENTS_SER}
+	</update>
+	
+	<update id="dT_CONTENTS_PST_INFO" parameterType="Xr020000Vo">
+		UPDATE T_CONTENTS_PST_INFO SET
+			DEL_YN = 'Y'
+			, MOD_DT = (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, MOD_ID = #{MOD_ID}
+		WHERE
+			1 = 1
+			AND PK_CONTENTS_SER = #{PK_CONTENTS_SER}
+	</update>
+	
+	<update id="dT_CONTENTS_DRM_INFO" parameterType="Xr020000Vo">
+		UPDATE T_CONTENTS_DRM_INFO SET
+			DEL_YN = 'Y'
+			, MOD_DT = (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, MOD_ID = #{MOD_ID}
+		WHERE
+			1 = 1
+			AND PK_CONTENTS_SER = #{PK_CONTENTS_SER}
+	</update>
+	
+	<update id="dT_CONTENTS_NM_INFO" parameterType="Xr020000Vo">
+		UPDATE T_CONTENTS_NM_INFO SET
+			DEL_YN = 'Y'
+			, MOD_DT = (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, MOD_ID = #{MOD_ID}
+		WHERE
+			1 = 1
+			AND PK_CONTENTS_SER = #{PK_CONTENTS_SER}
+	</update>
+	
+</mapper>

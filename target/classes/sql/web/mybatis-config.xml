@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="kr.cleancode.dashboard.manager.web.check.service.CheckWebSqlVo" alias="CheckWebSqlVo" />
+		<typeAlias type="kr.cleancode.dashboard.manager.web.check.service.DataBasicWebSqlVo" alias="DataBasicWebSqlVo" />
+		
+		<typeAlias type="kr.cleancode.dashboard.manager.web.xr00.service.Xr000000Vo" alias="Xr000000Vo" />
+		<typeAlias type="kr.cleancode.dashboard.manager.web.xr02.service.Xr020000Vo" alias="Xr020000Vo" />
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="sql/web/check/CheckWebSql.xml" />
+		<mapper resource="sql/web/check/TableWebSql.xml" />
+		<mapper resource="sql/web/check/DataBasicWebSql.xml" />
+		<mapper resource="sql/web/xr02/Xr020000Sql.xml" />
+	</mappers>
+</configuration>

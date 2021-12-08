@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="kr.cleancode.dashboard.manager.module.check.service.CheckModuleSqlVo" alias="CheckModuleSqlVo" />
+		
+		<typeAlias type="kr.cleancode.dashboard.manager.module.background.service.BackgroundSqlVo" alias="BackgroundSqlVo" />
+		<typeAlias type="kr.cleancode.dashboard.manager.module.coordinates.service.CoordinatesSqlVo" alias="CoordinatesSqlVo" />
+		<typeAlias type="kr.cleancode.dashboard.manager.module.program.service.ProgramSqlVo" alias="ProgramSqlVo" />
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="sql/module/check/CheckModuleSql.xml" />
+		<mapper resource="sql/module/check/TableModuleSql.xml" />
+		<mapper resource="sql/module/background/BackgroundSql.xml" />
+		<mapper resource="sql/module/coordinates/CoordinatesSql.xml" />
+		<mapper resource="sql/module/program/ProgramSql.xml" />
+	</mappers>
+</configuration>

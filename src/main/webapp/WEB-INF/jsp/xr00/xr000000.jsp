@@ -22,71 +22,31 @@ String message = request.getAttribute("message") != null ? (String)request.getAt
 %>
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>CJ 4DPLEX Content Distribution System</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="/css/login.css" />
-		<!--[if lte IE 8]><link rel="stylesheet" href="/css/loginIe8.css" /><![endif]-->
-		<!--[if lte IE 9]><link rel="stylesheet" href="/css/loginIe9.css" /><![endif]-->
-	</head>
-	<body>
-		<!-- Part : Header -->
-		<header id="header">
-			<h1>&nbsp;XR Manager System</h1>
-			<p>
-				We provide a manager system that handles the system through UI in virtual reality or augmented reality<br />
-				This is a prototype, the design will change
-			</p>
-		</header>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<link href="/css/common.css" rel="stylesheet" type="text/css">
+<link href="/css/xr00/xr000000.css" rel="stylesheet" type="text/css">
+</head>
 
-		<!-- Part : Signup Form -->
-		<form id="signup-form" method="post" action="#">
-			<input type="text" name="pId" id="pId" value="<c:out value="${pId}"/>" placeholder="User ID" />
-			<input type="password" name="pPassword" id="pPassword" placeholder="User Password" />
-			<input type="submit" value="Login" onclick="fn_login(); return false;" />
-			<div class="select-wrapper" style="width: 200px;">
-				<select id="pLang" name="pLang">
-					<c:forEach var="resultVo" items="${lTBsUsrLangInfo}">
-						<option value="<c:out value="${resultVo.PK_LANG_SER}"/>" <c:if test="${resultVo.PK_LANG_SER eq pLang}">selected="selected"</c:if>><c:out value="${resultVo.LANGUAGE_NM}"/></option>
-					</c:forEach>
-				</select>
-			</div>
-			<input type="checkbox" id="pIdSave" name="pIdSave"
-				<c:if test="${not empty pIdSave}">checked="checked"</c:if>
-			/>
-			<label for="pIdSave">Save ID</label>
-		</form>
+<body>
+  <div class="login-form">
+    <form>
+      <h1>Login</h1>
+      <div class="form-group">
+        <input type="email" name="email" placeholder="ID">
+        <span class="input-icon"><i class="fa fa-envelope"></i></span>
+      </div>
+      <div class="form-group">
+        <input type="password" name="psw" placeholder="Password">
+        <span class="input-icon"><i class="fa fa-lock"></i></span>
+      </div>      
+      <button class="login-btn">Login</button>      
+      <a class="reset-psw" href="#">Forgot your password?</a>
+<!--      <div class="seperator"><b></b></div>-->
+      <!-- Social login buttons -->
 
-		<!-- Part : Footer -->
-		<footer id="footer">
-			<p>Recommended web browsers: Internet Explorer Version 11, Chrome Version 49</p>
-			<ul class="copyright">
-				<li>Copyright &copy; 2021 by <a href="https://cleancode.kr/" id="cleancode">Clean Code</a>.
-			</ul>
-		</footer>
-
-		<!-- Scripts -->
-		<!--[if lte IE 8]><script src="/css/ie/respond.min.js"></script><![endif]-->
-		<script src="/js/util/sha256.js"></script>
-		<script src="/js/xr00/xr000000.js"></script>
-		<script src="/js/jquery/jquery.min.js"></script>
-		<script type="text/javascript">
-			$('#cleancode').click(function(e) {
-				e.preventDefault();
-				var scr_width = screen.availWidth;
-				var scr_height = screen.availHeight;
-				var option = "height=" + scr_height + ", width=" + scr_width +  ", 'toolbar=no, menubar=no, location=no, directions=no, resizable=1, scrollbars=yes, status=no, fullscreen=no'";
-				window.open(this.href, 'cleancode Homepage', option);
-			});
-		</script>
-		<c:choose>
-			<c:when test="${not empty message}">
-				<script type="text/javascript">
-					alert('<c:out value="${message}"/>');
-				</script>
-			</c:when>
-		</c:choose>
-	</body>
+    </form>
+  </div>
+</body>
 </html>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.cleancode.dashboard.manager.module.check.service.impl.CheckModuleSqlDao">
+
+	<select id="sHelloSql" parameterType="CheckModuleSqlVo" resultType="CheckModuleSqlVo">
+		SELECT
+			#{request} AS request
+			, STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')) AS response
+	</select>
+	
+	<select id="sTableExists" parameterType="string" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			SQLITE_MASTER
+		WHERE
+			1 = 1
+			AND TYPE = 'table' 
+		<if test="NAME != null">
+			AND NAME = #{tableName}
+		</if>
+	</select>
+	
+	<select id="sColumnExists" parameterType="CheckModuleSqlVo" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM
+			PRAGMA_TABLE_INFO(#{tableName})
+		WHERE
+			1 = 1
+			AND NAME = #{columnName}
+	</select>
+	
+</mapper>

@@ -1,0 +1,29 @@
+
+.search{
+	width: 90%;
+	margin: 20px auto 10px auto;
+
+	display: block;
+	color: #fff;
+	vertical-align: middle;
+	
+}
+
+.search input{
+	cursor: pointer;
+}
+
+
+
+@media screen and (max-width:768px) {
+
+.search input{
+	width: 100px;
+}
+	
+}
+@media screen and (max-width: 420px) {
+.search input{
+	width: 70px;
+}
+}

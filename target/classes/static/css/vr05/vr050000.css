@@ -1,0 +1,97 @@
+	.wrap {
+	  max-width: 960px;
+	  margin: 0 auto;
+	  color: white;
+	}
+	.wrap.wd668 {
+	  max-width: 628px;
+	}
+
+	.container {
+	  width: 100%;
+	}
+
+	.wrap.wd668.line .sub_tit_txt {
+	  margin: 0px 0 20px 20px;
+	}
+	.common_form {
+	  width: 100%;
+	  max-width: 668px;
+	}
+	.common_form table {
+	  border-spacing: 0;
+	  margin: 0;
+	  padding: 0;
+	  border: 0;
+	  width: 100%;
+	}
+	.exform_txt {
+	  padding: 12px 0 19px 0;
+	  text-align: right;
+	  color: #fff;
+	  font-size: 13px;
+	  border-bottom: 1px solid #ececec;
+	}
+	.exform_txt span {
+	  display: inline-block;
+	  position: relative;
+	  padding-left: 10px
+	}
+	.exform_txt span:after {
+	  content: '*';
+	  position: absolute;
+	  left: 0;
+	  top: 0;
+	  color: #f95427;
+	  font-size: 1rem;
+	  font-weight: bold;
+	}
+	.btn_wrap {
+	  text-align: center;
+	  margin: 20px 0 ;
+	}
+	.btn_wrap a {
+	  color: #fff;
+	  background-color: #7E98D3;
+	  font-weight: bold;
+	  padding: 10px;
+	  height: 30px;
+	  line-height: 30px;
+	  width: 168px;
+	  display: block;
+	  text-align: center;
+	  margin: 0 auto;
+		border-radius: 10px;
+	}
+	.btn_wrap a.wide {
+	  width: 587px;
+	  margin: 0 0 0 20px;
+	}
+	.common_form table th span {
+	  font-size: 14px;
+	  display: inline-block;
+	  position: relative;
+	  padding: 0 10px 0 0;
+	  text-indent: 20px;
+	}
+	.common_form table th {
+	  text-align: left;
+	}
+	.common_form table td {
+	  padding: 6px 0;
+	  position: relative;
+	}
+	.common_form table th span:after {
+	  content: '*';
+	  font-size: 13px;
+	  color: #f95427;
+	  position: absolute;
+	  top: 0;
+	  right: 0px;
+	}
+	.common_form .sub-table th {
+	  text-align: center;
+	}
+	@media screen and (max-width:767px) {
+		
+}

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.cleancode.dashboard.manager.web.check.service.impl.DataBasicWebSqlDao">
+
+	<insert id="iTBsUsrLevelInfo" parameterType="DataBasicWebSqlVo">
+		INSERT INTO T_BS_USR_LEVEL_INFO(
+			PK_USR_LEVEL_SER
+			, LEVEL_NM
+		) VALUES (
+			(SELECT 'PULS' || SUBSTR('0000000000000000000000000000' || CAST(COUNT(PK_USR_LEVEL_SER) + 1 AS TEXT), -28, 28) AS PK_USR_LEVEL_SER FROM T_BS_USR_LEVEL_INFO)
+			, #{LEVEL_NM}
+		)
+		<selectKey keyProperty="PK_USR_LEVEL_SER" resultType="java.lang.String" order="AFTER">
+			SELECT 'PULS' || SUBSTR('0000000000000000000000000000' || CAST(COUNT(PK_USR_LEVEL_SER) AS TEXT), -28, 28) AS PK_USR_LEVEL_SER FROM T_BS_USR_LEVEL_INFO
+		</selectKey>
+	</insert>
+	<select id="sRootAccountExists" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM 
+			T_MNG_USR_INFO
+		WHERE
+			1 = 1
+			AND USR_ID = 'root'
+	</select>
+	<insert id="iT_MNG_USR_INFO" parameterType="DataBasicWebSqlVo">
+		INSERT INTO T_MNG_USR_INFO(
+			USR_ID
+			, DEL_YN
+			, REG_DT
+			, REG_ID
+			, MOD_DT
+			, MOD_ID
+		) VALUES (
+			#{USR_ID}
+			, 'N'
+			, (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, #{REG_ID}
+			, NULL
+			, NULL
+		)
+		<selectKey keyProperty="USR_ID" resultType="java.lang.String" order="AFTER">
+			SELECT USR_ID FROM T_MNG_USR_INFO WHERE 1 = 1 AND USR_ID = #{USR_ID}
+		</selectKey>
+	</insert>
+	
+	<insert id="iT_MNG_USR_DTL_HIS_INFO" parameterType="DataBasicWebSqlVo">
+		INSERT INTO T_MNG_USR_DTL_HIS_INFO(
+			PK_USR_DTL_HIS_SER
+			, USR_ID
+			, REG_DT
+			, REG_ID
+		) VALUES (
+			(SELECT 'PLS' || SUBSTR('00000000000000000000000000000' || CAST(COUNT(PK_USR_DTL_HIS_SER) + 1 AS TEXT), -29, 29) AS PK_USR_DTL_HIS_SER FROM T_MNG_USR_DTL_HIS_INFO)
+			, #{USR_ID}
+			, (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, #{REG_ID}
+		)
+		<selectKey keyProperty="PK_USR_DTL_HIS_SER" resultType="java.lang.String" order="AFTER">
+			SELECT 'PLS' || SUBSTR('00000000000000000000000000000' || CAST(COUNT(PK_USR_DTL_HIS_SER) AS TEXT), -29, 29) AS PK_USR_DTL_HIS_SER FROM T_MNG_USR_DTL_HIS_INFO
+		</selectKey>
+	</insert>
+	
+	<insert id="iT_MNG_USR_PW_INFO" parameterType="DataBasicWebSqlVo">
+		INSERT INTO T_MNG_USR_PW_INFO(
+			PK_USR_PW_SER
+			, USR_ID
+			, PASSWORD
+			, REG_DT
+			, REG_ID
+		) VALUES (
+			(SELECT 'PUPS' || SUBSTR('00000000000000000000000000000' || CAST(COUNT(PK_USR_PW_SER)  + 1 AS TEXT), -28, 28) AS PK_USR_PW_SER FROM T_MNG_USR_PW_INFO)
+			, #{USR_ID}
+			, #{PASSWORD}
+			, (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, #{REG_ID}
+		)
+		<selectKey keyProperty="PK_USR_PW_SER" resultType="java.lang.String" order="AFTER">
+			SELECT 'PUPS' || SUBSTR('00000000000000000000000000000' || CAST(COUNT(PK_USR_PW_SER) AS TEXT), -28, 28) AS PK_USR_PW_SER FROM T_MNG_USR_PW_INFO
+		</selectKey>
+	</insert>
+	
+	<insert id="iT_MNG_USR_DTL_INFO" parameterType="DataBasicWebSqlVo">
+		INSERT INTO T_MNG_USR_DTL_INFO(
+			PK_USR_DTL_SER
+			, PK_USR_DTL_HIS_SER
+			, PK_USR_LEVEL_SER
+		) VALUES (
+			(SELECT 'PUDS' || SUBSTR('00000000000000000000000000000' || CAST(COUNT(PK_USR_DTL_SER) + 1 AS TEXT), -28, 28) AS PK_USR_DTL_SER FROM T_MNG_USR_DTL_INFO)
+			, #{PK_USR_DTL_HIS_SER}
+			, #{PK_USR_LEVEL_SER}
+		)
+		<selectKey keyProperty="PK_USR_DTL_SER" resultType="java.lang.String" order="AFTER">
+			SELECT 'PUDS' || SUBSTR('00000000000000000000000000000' || CAST(COUNT(PK_USR_DTL_SER) AS TEXT), -28, 28) AS PK_USR_DTL_SER FROM T_MNG_USR_DTL_INFO
+		</selectKey>
+	</insert>
+	
+</mapper>

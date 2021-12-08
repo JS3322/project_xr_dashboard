@@ -1,7 +1,3 @@
-/**
- * Create Time: 2021-11-21
- * Made by: js
- */
 package kr.cleancode.dashboard.manager.common;
 
 import java.util.Properties;
@@ -26,5 +22,12 @@ public class XrManagerProperties {
 			return null;
 		}
 	}
+	
+	public static String moduleName = getValueForJava("name.module");
+	public static String moduleVersion = getValueForJava("version.module");
+	public static String manufacturer = getValueForJava("manufacturer");
+	public static String developer = getValueForJava("developer");
+	public static String lisUpperPk = getValueForJava("lisUpperPk");
+	public static String description = getValueForJava("description");
 	
 }

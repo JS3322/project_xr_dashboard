@@ -1,5 +1,5 @@
 /**
- * Create Time: 2021-11-21
- * Made by: js
+ * @author JS
+ *
  */
 package kr.cleancode.dashboard.manager.common;

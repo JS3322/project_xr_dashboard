@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.cleancode.dashboard.manager.module.coordinates.service.impl.CoordinatesSqlDao">
+	
+	<insert id="iTMngMfsInfo" parameterType="CoordinatesSqlVo">
+		INSERT INTO T_MNG_MFS_INFO(
+			PK_MFS_SER
+			, PK_SW_DIV_SER
+			, MODULE_NM
+			, AXIS_X
+			, AXIS_Y
+			, RTG_WIDTH
+			, RTG_HEIGHT
+			, MAXIMUM
+			, MINIMUM
+		) VALUES (
+			(SELECT 'PMFS' || SUBSTR('0000000000000000' || CAST(COUNT(PK_MFS_SER) + 1 AS TEXT), -16, 16) AS PK_MFS_SER FROM T_MNG_MFS_INFO)
+			, #{PK_SW_DIV_SER}
+			, #{MODULE_NM}
+			, #{AXIS_X}
+			, #{AXIS_Y}
+			, #{RTG_WIDTH}
+			, #{RTG_HEIGHT}
+			, #{MAXIMUM}
+			, #{MINIMUM}
+		)
+		<selectKey keyProperty="PK_MFS_SER" resultType="java.lang.String" order="AFTER">
+			SELECT 'PMFS' || SUBSTR('0000000000000000' || CAST(COUNT(PK_MFS_SER) AS TEXT), -16, 16) AS PK_MFS_SER FROM T_MNG_MFS_INFO
+		</selectKey>
+	</insert>
+	
+	<insert id="iTMngMisInfo" parameterType="CoordinatesSqlVo">
+		INSERT INTO T_MNG_MIS_INFO(
+			PK_MIS_SER
+			, PK_MFS_SER
+			, AXIS_X
+			, AXIS_Y
+		) VALUES (
+			(SELECT 'PMIS' || SUBSTR('0000000000000000' || CAST(COUNT(PK_MIS_SER) + 1 AS TEXT), -16, 16) AS PK_MIS_SER FROM T_MNG_MIS_INFO)
+			, #{PK_MFS_SER}
+			, #{AXIS_X}
+			, #{AXIS_Y}
+		)
+		<selectKey keyProperty="PK_MIS_SER" resultType="java.lang.String" order="AFTER">
+			SELECT 'PMIS' || SUBSTR('0000000000000000' || CAST(COUNT(PK_MIS_SER) AS TEXT), -16, 16) AS PK_MIS_SER FROM T_MNG_MIS_INFO
+		</selectKey>
+	</insert>
+	
+	<select id="sViewHistory" parameterType="CoordinatesSqlVo" resultType="CoordinatesSqlVo">
+		SELECT
+			A.PK_MFS_SER
+			, A.PK_SW_DIV_SER
+			, A.MODULE_NM
+			, A.AXIS_X
+			, A.AXIS_Y
+			, A.RTG_WIDTH
+			, A.RTG_HEIGHT
+			, A.MAXIMUM
+			, A.MINIMUM
+			, B.PK_MIS_SER
+			, B.AXIS_X AS ICON_AXIS_X
+			, B.AXIS_Y AS ICON_AXIS_Y
+		FROM
+			T_MNG_MFS_INFO A
+			, T_MNG_MIS_INFO B
+		WHERE
+			1 = 1
+			AND A.PK_SW_DIV_SER = #{PK_SW_DIV_SER}
+			AND A.MODULE_NM = #{MODULE_NM}
+			AND A.PK_MFS_SER = B.PK_MFS_SER
+	</select>
+	
+	<update id="uTMngMfsInfo" parameterType="CoordinatesSqlVo">
+		UPDATE T_MNG_MFS_INFO SET
+			AXIS_X = #{AXIS_X}
+			, AXIS_Y = #{AXIS_Y}
+			, RTG_WIDTH = #{RTG_WIDTH}
+			, RTG_HEIGHT = #{RTG_HEIGHT}
+			, MAXIMUM = #{MAXIMUM}
+			, MINIMUM = #{MINIMUM}
+		WHERE
+			1 = 1
+			AND PK_MFS_SER = #{PK_MFS_SER}
+	</update>
+	
+	<update id="uTMngMisInfo" parameterType="CoordinatesSqlVo">
+		UPDATE T_MNG_MIS_INFO SET
+			AXIS_X = #{ICON_AXIS_X}
+			, AXIS_Y = #{ICON_AXIS_Y}
+		WHERE
+			1 = 1
+			AND PK_MIS_SER = #{PK_MIS_SER} 
+	</update>
+	
+</mapper>

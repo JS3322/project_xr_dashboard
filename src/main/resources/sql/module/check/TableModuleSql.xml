@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.cleancode.dashboard.manager.module.check.service.impl.TableModuleSqlDao">
+
+	<update id="uTMngMfsInfo">
+		CREATE TABLE T_MNG_MFS_INFO(
+			PK_MFS_SER           CHAR(20) NOT NULL,
+			PK_SW_DIV_SER        CHAR(20) NOT NULL,
+			MODULE_NM            VARCHAR(128) NOT NULL,
+			AXIS_X               INTEGER NOT NULL,
+			AXIS_Y               INTEGER NOT NULL,
+			RTG_WIDTH            INTEGER NOT NULL,
+			RTG_HEIGHT           INTEGER NOT NULL,
+			MAXIMUM              CHAR(1) NOT NULL,
+			MINIMUM              CHAR(1) NOT NULL,
+			PRIMARY KEY (PK_MFS_SER)
+		)
+	</update>
+	
+	<update id="uTMngMiInfo">
+		CREATE TABLE T_MNG_MI_INFO(
+			PK_MI_SER            CHAR(20) NOT NULL,
+			PK_SW_DIV_SER        CHAR(20) NOT NULL,
+			MODULE_NM            VARCHAR(128) NOT NULL,
+			MANUFACTURER         VARCHAR(128) NOT NULL,
+			DEVELOPER            VARCHAR(128) NOT NULL,
+			VERSION              VARCHAR(32) NOT NULL,
+			DESCRIPTION          VARCHAR(128) NOT NULL,
+			USE_YN               CHAR(1) NOT NULL,
+			SIZE                 VARCHAR(64) NOT NULL,
+			PATH                 VARCHAR(256) NOT NULL,
+			REG_DT               TIMESTAMP NOT NULL,
+			MOD_DT               TIMESTAMP NULL,
+			PRIMARY KEY (PK_MI_SER)
+		)
+	</update>
+	
+	<update id="uTMngMisInfo">
+		CREATE TABLE T_MNG_MIS_INFO(
+			PK_MIS_SER           CHAR(20) NOT NULL,
+			PK_MFS_SER           CHAR(20) NOT NULL,
+			AXIS_X               INTEGER NOT NULL,
+			AXIS_Y               INTEGER NOT NULL,
+			PRIMARY KEY (PK_MIS_SER,PK_MFS_SER),
+			FOREIGN KEY (PK_MFS_SER) REFERENCES T_MNG_MFS_INFO (PK_MFS_SER)
+		)
+	</update>
+	
+	<update id="uTMngBackgroundInfo">
+		CREATE TABLE T_MNG_BACKGROUND_INFO(
+			PK_BACKGROUND_SER           CHAR(20) NOT NULL,
+			BACKGROUND_FILE_NM          VARCHAR(256) NOT NULL,
+			BACKGROUND_FILE_PATH        VARCHAR(512) NOT NULL,
+			DEL_YN               		CHAR(1) NOT NULL,
+			REG_DT               		TIMESTAMP NOT NULL,
+			MOD_DT               		TIMESTAMP NULL,
+			PRIMARY KEY (PK_BACKGROUND_SER)
+		)
+	</update>
+	
+</mapper>

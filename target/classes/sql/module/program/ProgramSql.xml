@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.cleancode.dashboard.manager.module.program.service.impl.ProgramSqlDao">
+	
+	<insert id="iTMngMiInfo" parameterType="ProgramSqlVo">
+		INSERT INTO T_MNG_MI_INFO(
+			PK_MI_SER
+			, PK_SW_DIV_SER
+			, MODULE_NM
+			, MANUFACTURER
+			, DEVELOPER
+			, VERSION
+			, DESCRIPTION
+			, USE_YN
+			, SIZE
+			, PATH
+			, REG_DT
+			, MOD_DT
+		) VALUES (
+			(SELECT 'PMS' || SUBSTR('00000000000000000' || CAST(COUNT(PK_MI_SER) + 1 AS TEXT), -17, 17) AS PK_MI_SER FROM T_MNG_MI_INFO)
+			, #{PK_SW_DIV_SER}
+			, #{MODULE_NM}
+			, #{MANUFACTURER}
+			, #{DEVELOPER}
+			, #{VERSION}
+			, #{DESCRIPTION}
+			, 'Y'
+			, #{SIZE}
+			, #{PATH}
+			, (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+			, NULL
+		)
+		<selectKey keyProperty="PK_MI_SER" resultType="java.lang.String" order="AFTER">
+			SELECT 'PMS' || SUBSTR('00000000000000000' || CAST(COUNT(PK_MI_SER) AS TEXT), -17, 17) AS PK_MI_SER FROM T_MNG_MI_INFO
+		</selectKey>
+	</insert>
+	
+	<select id="sTMngMiInfo" parameterType="ProgramSqlVo" resultType="ProgramSqlVo">
+		SELECT
+			PK_MI_SER
+			, PK_SW_DIV_SER
+			, MODULE_NM
+			, MANUFACTURER
+			, DEVELOPER
+			, VERSION
+			, DESCRIPTION
+			, USE_YN
+			, SIZE
+			, PATH
+			, REG_DT
+			, MOD_DT
+		FROM
+			T_MNG_MI_INFO
+		WHERE
+			1 = 1
+			AND USE_YN = 'Y'
+			<if test="null != PK_SW_DIV_SER">
+				AND PK_SW_DIV_SER = #{PK_SW_DIV_SER}
+			</if>
+			<if test="null != MODULE_NM">
+				AND MODULE_NM = #{MODULE_NM}
+			</if>
+		ORDER BY
+			PK_MI_SER
+	</select>
+	
+	<select id="lTMngMiInfo" parameterType="ProgramSqlVo" resultType="ProgramSqlVo">
+		SELECT
+			PK_MI_SER
+			, PK_SW_DIV_SER
+			, MODULE_NM
+			, MANUFACTURER
+			, DEVELOPER
+			, VERSION
+			, DESCRIPTION
+			, USE_YN
+			, SIZE
+			, PATH
+			, REG_DT
+			, MOD_DT
+		FROM
+			T_MNG_MI_INFO
+		WHERE
+			1 = 1
+			<if test="USE_YN != null">
+				AND USE_YN = #{USE_YN}
+			</if>
+		ORDER BY
+			CASE 
+				WHEN PK_SW_DIV_SER == 'PSDS0000000000000025' THEN 3 <!-- Logger -->
+				WHEN PK_SW_DIV_SER == 'PSDS0000000000000012' THEN 2 <!-- Motion -->
+				WHEN PK_SW_DIV_SER == 'PSDS0000000000000013' THEN 1 <!-- DIO -->
+				ELSE 0
+			END DESC
+			, CASE
+				WHEN PK_SW_DIV_SER == 'PSDS0000000000000023' THEN 1 <!-- Upgrade --> 
+				WHEN PK_SW_DIV_SER == 'PSDS0000000000000011' THEN 2 <!-- Show -->
+				WHEN PK_SW_DIV_SER == 'PSDS0000000000000022' THEN 3 <!-- Code Auto -->
+				ELSE 0
+			END ASC
+			, PK_MI_SER
+	</select>
+	
+	<update id="uTMngMiInfo" parameterType="ProgramSqlVo">
+		UPDATE T_MNG_MI_INFO SET
+			USE_YN = #{USE_YN}
+			, PATH = #{PATH}
+			, MOD_DT = (STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')))
+		WHERE
+			1 = 1
+			AND PK_MI_SER = #{PK_MI_SER}
+	</update>
+	
+</mapper>

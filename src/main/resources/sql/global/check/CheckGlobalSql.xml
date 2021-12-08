@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.cleancode.dashboard.manager.global.check.service.impl.CheckGlobalSqlDao">
+
+	<select id="sHelloSql" parameterType="CheckGlobalSqlVo" resultType="CheckGlobalSqlVo">
+		SELECT
+			#{request} AS request
+			, STRFTIME('%Y-%m-%d %H:%M:%S', DATETIME('NOW', 'LOCALTIME')) AS response
+	</select>
+	
+</mapper>
