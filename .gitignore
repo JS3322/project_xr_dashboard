@@ -25,6 +25,9 @@ hs_err_pid*
 # BK
 /_bk
 
+#target
+/target
+
 # DB
 /db
 
