@@ -37,4 +37,7 @@ hs_err_pid*
 # Private File
 README_private.md
 .DS_STORE
+.DS_Store
 .idea
+_temp/
+_backup/

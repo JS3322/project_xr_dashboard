@@ -13,6 +13,7 @@ XR Dashboard
 - [x] init page, table view prototype
 - [ ] login logic
 - [ ] log4j update
+- [x] use lib org.apache.commons.lang3.time.DateFormatUtils
 
 ---
 ### Import Library

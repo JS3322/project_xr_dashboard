@@ -23,11 +23,6 @@ function fn_modifyMode(mode) {
 			downloadItem.style.display = "";
 		}
 
-//		for (var i = 0; i < uploadClass.length; i++) {
-//			var uploadItem = uploadClass.item(i);
-//			uploadItem.style.display = "none";
-//		}
-
 	} else {
 		document.getElementById('btnAdd').style.display = "";
 		document.getElementById('btnErase').style.display = "";
